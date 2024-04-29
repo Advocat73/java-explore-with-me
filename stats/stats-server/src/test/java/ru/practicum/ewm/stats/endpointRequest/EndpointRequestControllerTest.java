@@ -8,7 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.practicum.ewm.stats.endpointRequestDto.EndpointRequestInDto;
+import ru.practicum.ewm.stats.endpointRequestDto.EndpointHit;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
@@ -33,31 +33,31 @@ public class EndpointRequestControllerTest {
 
     @Test
     void addNewRequest() throws Exception {
-        EndpointRequestInDto endpointRequestInDto = createEndpointRequestInDto();
-        endpointRequestInDto.setId(1L);
-        when(endpointRequestService.addNewEndpointRequest(endpointRequestInDto)).thenReturn(endpointRequestInDto);
+        EndpointHit endpointHit = createEndpointHit();
+        endpointHit.setId(1L);
+        when(endpointRequestService.addNewEndpointRequest(endpointHit)).thenReturn(endpointHit);
         mvc.perform(post("/hit")
-                        .content(mapper.writeValueAsString((endpointRequestInDto)))
+                        .content(mapper.writeValueAsString((endpointHit)))
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1L), Long.class))
-                .andExpect((jsonPath("$.app", is(endpointRequestInDto.getApp()))))
-                .andExpect(jsonPath("$.ip", is(endpointRequestInDto.getIp())))
-                .andExpect(jsonPath("$.uri", is(endpointRequestInDto.getUri())))
-                .andExpect(jsonPath("timestamp", is(endpointRequestInDto.getTimestamp())));
+                .andExpect((jsonPath("$.app", is(endpointHit.getApp()))))
+                .andExpect(jsonPath("$.ip", is(endpointHit.getIp())))
+                .andExpect(jsonPath("$.uri", is(endpointHit.getUri())))
+                .andExpect(jsonPath("timestamp", is(endpointHit.getTimestamp())));
     }
 
-    private EndpointRequestInDto createEndpointRequestInDto() {
-        EndpointRequestInDto endpointRequestInDto = new EndpointRequestInDto();
-        endpointRequestInDto.setApp("ewm-main-service");
+    private EndpointHit createEndpointHit() {
+        EndpointHit endpointHit = new EndpointHit();
+        endpointHit.setApp("ewm-main-service");
         Boolean b = generator.nextObject(Boolean.class);
         Integer n = generator.nextInt(5);
         String uri = (b) ? "/events" : "/events/" + n;
-        endpointRequestInDto.setUri(uri);
-        endpointRequestInDto.setIp("121.0.0.1");
-        endpointRequestInDto.setTimestamp(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        return endpointRequestInDto;
+        endpointHit.setUri(uri);
+        endpointHit.setIp("121.0.0.1");
+        endpointHit.setTimestamp(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        return endpointHit;
     }
 }

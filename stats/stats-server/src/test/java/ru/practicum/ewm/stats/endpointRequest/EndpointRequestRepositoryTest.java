@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.DirtiesContext;
-import ru.practicum.ewm.stats.endpointRequestDto.EndpointRequestInDto;
+import ru.practicum.ewm.stats.endpointRequestDto.EndpointHit;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -83,19 +83,19 @@ public class EndpointRequestRepositoryTest {
     }
 
     private EndpointRequest createAndSaveEndpointRequest(Long dur) {
-        return endpointRequestRepository.save(EndpointRequestMapper.fromEndpointRequestInDto(createEndpointRequestInDto(dur)));
+        return endpointRequestRepository.save(EndpointRequestMapper.fromEndpointRequestInDto(createEndpointHit(dur)));
     }
 
-    private EndpointRequestInDto createEndpointRequestInDto(Long dur) {
-        EndpointRequestInDto endpointRequestInDto = new EndpointRequestInDto();
-        endpointRequestInDto.setApp("ewm-main-service");
+    private EndpointHit createEndpointHit(Long dur) {
+        EndpointHit endpointHit = new EndpointHit();
+        endpointHit.setApp("ewm-main-service");
         int n = random.nextInt(EVENTS_MAX_COUNT) + 1;
         String uri = (random.nextBoolean()) ? "/events" : "/events/" + n;
-        endpointRequestInDto.setUri(uri);
-        endpointRequestInDto.setIp("121.0.0.1");
+        endpointHit.setUri(uri);
+        endpointHit.setIp("121.0.0.1");
         LocalDateTime createdDate = LocalDateTime.now().plusYears(dur);
-        endpointRequestInDto.setTimestamp(createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        return endpointRequestInDto;
+        endpointHit.setTimestamp(createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        return endpointHit;
     }
 
     private List<EndpointRequestShort> fillLocalDataAndDBResultList(List<String> uriList, LocalDateTime start, LocalDateTime end) {

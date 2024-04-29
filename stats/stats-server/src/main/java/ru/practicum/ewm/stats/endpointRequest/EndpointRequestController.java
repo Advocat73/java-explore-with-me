@@ -5,8 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.ewm.stats.endpointRequestDto.EndpointRequestInDto;
-import ru.practicum.ewm.stats.endpointRequestDto.EndpointRequestOutDto;
+import ru.practicum.ewm.stats.endpointRequestDto.EndpointHit;
+import ru.practicum.ewm.stats.endpointRequestDto.ViewStats;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -20,13 +20,13 @@ public class EndpointRequestController {
     private final EndpointRequestService endpointRequestService;
 
     @PostMapping("/hit")
-    public EndpointRequestInDto addNewRequest(@RequestBody EndpointRequestInDto endpointRequestInDto) {
+    public EndpointHit addNewRequest(@RequestBody EndpointHit endpointHit) {
         log.info("ENDPOINT_REQUEST_SERVER_КОНТРОЛЛЕР: POST-запрос по эндпоинту /hit");
-        return endpointRequestService.addNewEndpointRequest(endpointRequestInDto);
+        return endpointRequestService.addNewEndpointRequest(endpointHit);
     }
 
     @GetMapping("/stats")
-    public EndpointRequestOutDto[] getEndpointRequestList(@NotNull(message = "Не указано время начала поиска")
+    public ViewStats[] getEndpointRequestList(@NotNull(message = "Не указано время начала поиска")
                                                           @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
                                                           @RequestParam LocalDateTime start,
                                                           @NotNull(message = "Не указано время конца поиска")

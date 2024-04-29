@@ -3,7 +3,7 @@ package ru.practicum.ewm.stats.endpointRequestDto;
 import lombok.Data;
 
 @Data
-public class EndpointRequestInDto {
+public class EndpointHit {
     Long id;
     String app;
     String uri;

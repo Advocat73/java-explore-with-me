@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 import org.springframework.test.annotation.DirtiesContext;
-import ru.practicum.ewm.stats.endpointRequestDto.EndpointRequestInDto;
+import ru.practicum.ewm.stats.endpointRequestDto.EndpointHit;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -31,31 +31,31 @@ public class EndpointRequestServiceTest {
     void addNewRequest() {
         endpointRequestService = new EndpointRequestService(endpointRequestRepository);
 
-        EndpointRequestInDto endpointRequestInDto = createEndpointRequestInDto();
+        EndpointHit endpointHit = createEndpointHit();
 
         when(endpointRequestRepository.save(ArgumentMatchers.any(EndpointRequest.class))).thenAnswer((Answer<EndpointRequest>) invocation -> {
             EndpointRequest en = (EndpointRequest) invocation.getArguments()[0];
             en.setId(1L);
             return en;
         });
-        EndpointRequestInDto endpointRequestInDtoReceived = endpointRequestService.addNewEndpointRequest(endpointRequestInDto);
+        EndpointHit endpointRequestInDtoReceived = endpointRequestService.addNewEndpointRequest(endpointHit);
         assertEquals(1L, endpointRequestInDtoReceived.getId());
-        assertEquals(endpointRequestInDto.getApp(), endpointRequestInDtoReceived.getApp());
-        assertEquals(endpointRequestInDto.getUri(), endpointRequestInDtoReceived.getUri());
-        assertEquals(endpointRequestInDto.getIp(), endpointRequestInDtoReceived.getIp());
-        assertEquals(endpointRequestInDto.getTimestamp(), endpointRequestInDtoReceived.getTimestamp());
+        assertEquals(endpointHit.getApp(), endpointRequestInDtoReceived.getApp());
+        assertEquals(endpointHit.getUri(), endpointRequestInDtoReceived.getUri());
+        assertEquals(endpointHit.getIp(), endpointRequestInDtoReceived.getIp());
+        assertEquals(endpointHit.getTimestamp(), endpointRequestInDtoReceived.getTimestamp());
     }
 
-    private EndpointRequestInDto createEndpointRequestInDto() {
-        EndpointRequestInDto endpointRequestInDto = new EndpointRequestInDto();
-        endpointRequestInDto.setApp("ewm-main-service");
+    private EndpointHit createEndpointHit() {
+        EndpointHit endpointHit = new EndpointHit();
+        endpointHit.setApp("ewm-main-service");
         Boolean b = generator.nextObject(Boolean.class);
         int n = generator.nextInt(5);
         String uri = (b) ? "/events" : "/events/" + n;
-        endpointRequestInDto.setUri(uri);
-        endpointRequestInDto.setIp("121.0.0.1");
-        endpointRequestInDto.setTimestamp(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        return endpointRequestInDto;
+        endpointHit.setUri(uri);
+        endpointHit.setIp("121.0.0.1");
+        endpointHit.setTimestamp(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        return endpointHit;
     }
 }
 

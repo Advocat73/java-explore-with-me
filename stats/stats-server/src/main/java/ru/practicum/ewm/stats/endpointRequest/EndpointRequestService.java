@@ -2,8 +2,8 @@ package ru.practicum.ewm.stats.endpointRequest;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.practicum.ewm.stats.endpointRequestDto.EndpointRequestInDto;
-import ru.practicum.ewm.stats.endpointRequestDto.EndpointRequestOutDto;
+import ru.practicum.ewm.stats.endpointRequestDto.EndpointHit;
+import ru.practicum.ewm.stats.endpointRequestDto.ViewStats;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,12 +13,12 @@ import java.util.List;
 public class EndpointRequestService {
     private final EndpointRequestRepository repository;
 
-    EndpointRequestInDto addNewEndpointRequest(EndpointRequestInDto endpointRequestInDto) {
-        EndpointRequest endpointRequest = EndpointRequestMapper.fromEndpointRequestInDto(endpointRequestInDto);
+    EndpointHit addNewEndpointRequest(EndpointHit endpointHit) {
+        EndpointRequest endpointRequest = EndpointRequestMapper.fromEndpointRequestInDto(endpointHit);
         return EndpointRequestMapper.toEndpointRequestInDto(repository.save(endpointRequest));
     }
 
-    EndpointRequestOutDto[] findEndpointRequestList(LocalDateTime start, LocalDateTime end, String[] uris, Boolean unique) {
+    ViewStats[] findEndpointRequestList(LocalDateTime start, LocalDateTime end, String[] uris, Boolean unique) {
         List<EndpointRequestShort> endpointRequestShortList = (uris == null) ?
                 repository.findAllEventsWithoutUris(start, end) :
                 (!unique) ?
@@ -27,7 +27,7 @@ public class EndpointRequestService {
 
         return endpointRequestShortList
                 .stream()
-                .map(EndpointRequestMapper::toEndpointRequestOutDto)
-                .toArray(EndpointRequestOutDto[]::new);
+                .map(EndpointRequestMapper::toViewStats)
+                .toArray(ViewStats[]::new);
     }
 }
