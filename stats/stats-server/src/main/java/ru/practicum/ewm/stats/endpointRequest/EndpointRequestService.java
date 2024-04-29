@@ -6,7 +6,6 @@ import ru.practicum.ewm.stats.endpointRequestDto.EndpointRequestInDto;
 import ru.practicum.ewm.stats.endpointRequestDto.EndpointRequestOutDto;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -19,24 +18,13 @@ public class EndpointRequestService {
         return EndpointRequestMapper.toEndpointRequestInDto(repository.save(endpointRequest));
     }
 
-    EndpointRequestOutDto[] findEndpointRequestList(String start, String end, String[] uris, Boolean unique) {
-        List<EndpointRequestShort> endpointRequestShortList;
-        if (uris == null)
-            endpointRequestShortList = repository.findAllEventsWithoutUris(
-                    LocalDateTime.parse(start, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
-                    LocalDateTime.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        else {
-            if (!unique)
-                endpointRequestShortList = repository.findEventsByUris(
-                        List.of(uris),
-                        LocalDateTime.parse(start, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
-                        LocalDateTime.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-            else
-                endpointRequestShortList = repository.findEventsByUrisDistinct(
-                        List.of(uris),
-                        LocalDateTime.parse(start, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
-                        LocalDateTime.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        }
+    EndpointRequestOutDto[] findEndpointRequestList(LocalDateTime start, LocalDateTime end, String[] uris, Boolean unique) {
+        List<EndpointRequestShort> endpointRequestShortList = (uris == null) ?
+                repository.findAllEventsWithoutUris(start, end) :
+                (!unique) ?
+                        repository.findEventsByUris(List.of(uris), start, end) :
+                        repository.findEventsByUrisDistinct(List.of(uris), start, end);
+
         return endpointRequestShortList
                 .stream()
                 .map(EndpointRequestMapper::toEndpointRequestOutDto)
