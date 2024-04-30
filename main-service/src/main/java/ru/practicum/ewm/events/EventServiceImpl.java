@@ -13,9 +13,12 @@ import ru.practicum.ewm.exception.BadRequestException;
 import ru.practicum.ewm.exception.ConflictException;
 import ru.practicum.ewm.exception.ForbiddenUpdateException;
 import ru.practicum.ewm.exception.NotFoundException;
+import ru.practicum.ewm.stats.StatsClientController;
+import ru.practicum.ewm.stats.endpointRequestDto.ViewStats;
 import ru.practicum.ewm.users.User;
 import ru.practicum.ewm.users.UserRepository;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -28,9 +31,11 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
 public class EventServiceImpl implements EventService {
+    private static final String APP_NAME = "ewm-main-service";
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
+    private final StatsClientController statsClientController;
 
     @Override
     public EventFullDto addNewEvent(NewEventDto newEventDto, int userId) {
@@ -112,7 +117,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<EventShortDto> findEventsByPublicRequest(String text, int[] categories, Boolean paid, String rangeStart,
                                                          String rangeEnd, Boolean onlyAvailable, String sort,
-                                                         int from, int size, String ipAddress) {
+                                                         int from, int size, HttpServletRequest request) {
         log.info("EVENT_СЕРВИС: Отправлен публичный запрос на получение данных о событиях по парамметрам");
         LocalDateTime start = (rangeStart == null) ? null : LocalDateTime.parse(rangeStart, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         LocalDateTime end = (rangeEnd == null) ? null : LocalDateTime.parse(rangeEnd, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
@@ -129,14 +134,17 @@ public class EventServiceImpl implements EventService {
                 .build();
         List<Event> events = searchEventByParam(filter, createPageRequest(sort, from, size));
         log.info("EVENT_СЕРВИС: Найдено {} событий", events.size());
+        statsClientController.addNewRequest(APP_NAME, request.getRequestURI(), request.getRemoteAddr(),
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         return EventMapper.toEventShortDtoList(events);
     }
 
     @Override
-    public EventFullDto findEventByPublicRequest(int eventId, String ipAddress) {
+    public EventFullDto findEventByPublicRequest(int eventId, HttpServletRequest request) {
         log.info("EVENT_СЕРВИС: Отправлен публичный запрос на получение данных о событии с Id: {}", eventId);
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException("Не найдено событие с Id: " + eventId));
+        String ipAddress = request.getRemoteAddr();
         if (event.getState() != State.PUBLISHED)
             throw new NotFoundException("Не найдено событие с Id: " + eventId);
         if (!event.getIpAddresses().contains(ipAddress)) {
@@ -144,6 +152,11 @@ public class EventServiceImpl implements EventService {
             event.getIpAddresses().add(ipAddress);
             eventRepository.save(event);
         }
+        statsClientController.addNewRequest(APP_NAME, request.getRequestURI(), ipAddress,
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        ViewStats[] viewStats = statsClientController.getEndpointRequestList(event.getEventDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), new String[]{"/events/" + eventId}, true);
+        event.setViews(viewStats[0].getHits());
         return EventMapper.toEventFullDto(event);
     }
 

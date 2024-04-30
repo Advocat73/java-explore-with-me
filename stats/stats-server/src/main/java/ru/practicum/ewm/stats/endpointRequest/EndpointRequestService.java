@@ -14,8 +14,8 @@ public class EndpointRequestService {
     private final EndpointRequestRepository repository;
 
     EndpointHit addNewEndpointRequest(EndpointHit endpointHit) {
-        EndpointRequest endpointRequest = EndpointRequestMapper.fromEndpointRequestInDto(endpointHit);
-        return EndpointRequestMapper.toEndpointRequestInDto(repository.save(endpointRequest));
+        EndpointRequest endpointRequest = EndpointRequestMapper.fromEndpointHit(endpointHit);
+        return EndpointRequestMapper.toEndpointHit(repository.save(endpointRequest));
     }
 
     ViewStats[] findEndpointRequestList(LocalDateTime start, LocalDateTime end, String[] uris, Boolean unique) {

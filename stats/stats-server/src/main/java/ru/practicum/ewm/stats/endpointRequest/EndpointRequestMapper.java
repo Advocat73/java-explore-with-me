@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class EndpointRequestMapper {
-    public static EndpointRequest fromEndpointRequestInDto(EndpointHit endpointRequestInDto) {
+    public static EndpointRequest fromEndpointHit(EndpointHit endpointRequestInDto) {
         if (endpointRequestInDto == null)
             return null;
         EndpointRequest endpointRequest = new EndpointRequest();
@@ -18,7 +18,7 @@ public class EndpointRequestMapper {
         return endpointRequest;
     }
 
-    public static EndpointHit toEndpointRequestInDto(EndpointRequest endpointRequest) {
+    public static EndpointHit toEndpointHit(EndpointRequest endpointRequest) {
         if (endpointRequest == null)
             return null;
         EndpointHit endpointHit = new EndpointHit();

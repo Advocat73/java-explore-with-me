@@ -36,14 +36,14 @@ public class eventPublicController {
                         "rangeStart={}, rangeEnd={}, onlyAvailable={}, sort={}, from={}, size={}", text, categories, paid,
                 rangeStart, rangeEnd, onlyAvailable, sort, from, size);
         List<EventShortDto> lst = eventService.findEventsByPublicRequest(text, categories, paid,
-                rangeStart, rangeEnd, onlyAvailable, sort, from, size, request.getRemoteAddr());
+                rangeStart, rangeEnd, onlyAvailable, sort, from, size, request);
         return ResponseEntity.status(HttpStatus.OK).body(lst);
     }
 
     @GetMapping("/{eventId}")
     ResponseEntity<EventFullDto> findEventPublic(@PathVariable int eventId, HttpServletRequest request) {
         log.info("EVENT_PUBLIC_КОНТРОЛЛЕР: GET-запрос по эндпоинту /events/{}", eventId);
-        EventFullDto eventDto = eventService.findEventByPublicRequest(eventId, request.getRemoteAddr());
+        EventFullDto eventDto = eventService.findEventByPublicRequest(eventId, request);
         return ResponseEntity.status(HttpStatus.OK).body(eventDto);
     }
 }

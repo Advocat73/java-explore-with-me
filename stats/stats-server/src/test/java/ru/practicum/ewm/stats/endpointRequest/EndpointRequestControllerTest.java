@@ -41,7 +41,7 @@ public class EndpointRequestControllerTest {
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(1L), Long.class))
                 .andExpect((jsonPath("$.app", is(endpointHit.getApp()))))
                 .andExpect(jsonPath("$.ip", is(endpointHit.getIp())))

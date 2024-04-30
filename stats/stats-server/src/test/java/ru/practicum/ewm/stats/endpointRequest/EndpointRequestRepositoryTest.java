@@ -83,7 +83,7 @@ public class EndpointRequestRepositoryTest {
     }
 
     private EndpointRequest createAndSaveEndpointRequest(Long dur) {
-        return endpointRequestRepository.save(EndpointRequestMapper.fromEndpointRequestInDto(createEndpointHit(dur)));
+        return endpointRequestRepository.save(EndpointRequestMapper.fromEndpointHit(createEndpointHit(dur)));
     }
 
     private EndpointHit createEndpointHit(Long dur) {
