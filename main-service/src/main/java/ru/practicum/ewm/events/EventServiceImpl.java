@@ -141,7 +141,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventFullDto findEventByPublicRequest(int eventId, HttpServletRequest request) {
-        log.info("EVENT_СЕРВИС: Отправлен публичный запрос на получение данных о событии с Id: {}", eventId);
+        log.info("EVENT_SERVICE: Отправлен публичный запрос на получение данных о событии с Id: {}", eventId);
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException("Не найдено событие с Id: " + eventId));
         String ipAddress = request.getRemoteAddr();
