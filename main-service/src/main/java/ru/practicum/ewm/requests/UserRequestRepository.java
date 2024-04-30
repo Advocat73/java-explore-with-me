@@ -11,7 +11,7 @@ public interface UserRequestRepository extends JpaRepository<UserRequest, Intege
     @Query(value = "SELECT * "
             + " from user_requests as ur"
             + " JOIN events AS ev ON ur.event_id = ev.id"
-            + " where ur.event_id = ?1 AND ev.initiator_id = ?2"
-            , nativeQuery = true)
+            + " where ur.event_id = ?1 AND ev.initiator_id = ?2",
+            nativeQuery = true)
     List<UserRequest> findAllByEventIdAndInitiatorId(int eventId, int requesterId);
 }

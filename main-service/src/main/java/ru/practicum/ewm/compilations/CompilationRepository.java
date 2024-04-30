@@ -9,5 +9,6 @@ import java.util.List;
 
 public interface CompilationRepository extends JpaRepository<Compilation, Integer>, JpaSpecificationExecutor<Event> {
     List<Compilation> findAllByPinnedFalse(PageRequest pageRequest);
+
     List<Compilation> findAllByPinnedTrue(PageRequest pageRequest);
 }

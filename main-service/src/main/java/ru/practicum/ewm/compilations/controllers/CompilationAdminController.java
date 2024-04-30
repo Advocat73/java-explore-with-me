@@ -28,7 +28,7 @@ public class CompilationAdminController {
     }
 
     @PatchMapping("/{compId}")
-    public ResponseEntity<CompilationDto> UpdateCompilation(@RequestBody @Valid UpdateCompilationRequest updateRequest,
+    public ResponseEntity<CompilationDto> updateCompilation(@RequestBody @Valid UpdateCompilationRequest updateRequest,
                                                             @PathVariable int compId) {
         log.info("COMPILATION_ADMIN_КОНТРОЛЛЕР: PATCH-запрос по эндпоинту /admin/compilations/{}", compId);
         CompilationDto compilationDto = compilationService.updateCompilation(updateRequest, compId);
@@ -36,7 +36,7 @@ public class CompilationAdminController {
     }
 
     @DeleteMapping("/{compId}")
-    public ResponseEntity<Void> RemoveCompilation(@PathVariable int compId) {
+    public ResponseEntity<Void> removeCompilation(@PathVariable int compId) {
         log.info("COMPILATION_ADMIN_КОНТРОЛЛЕР: DELETE-запрос по эндпоинту /admin/compilations/{}", compId);
         compilationService.deleteCompilation(compId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

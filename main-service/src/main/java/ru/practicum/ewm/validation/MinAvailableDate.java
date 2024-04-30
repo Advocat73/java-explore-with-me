@@ -1,7 +1,6 @@
 package ru.practicum.ewm.validation;
 
 import javax.validation.Constraint;
-import javax.validation.constraints.Past;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 

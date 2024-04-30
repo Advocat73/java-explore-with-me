@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Validated
 @RequestMapping(path = "/events")
-public class eventPublicController {
+public class EventPublicController {
     private final EventService eventService;
 
     @GetMapping
