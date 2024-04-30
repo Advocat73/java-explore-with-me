@@ -30,7 +30,7 @@ public class EventUserController {
     @PostMapping
     public ResponseEntity<EventFullDto> addNewEvent(@RequestBody @Valid NewEventDto newEventDto,
                                                     @PathVariable int userId) {
-        log.info("EVENT_USER_КОНТРОЛЛЕР: POST-запрос по эндпоинту /users/{}/events", userId);
+        log.info("EVENT_USER_CONTROLLER: POST-запрос по эндпоинту /users/{}/events", userId);
         EventFullDto eventDto = eventService.addNewEvent(newEventDto, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(eventDto);
     }
@@ -39,7 +39,7 @@ public class EventUserController {
     ResponseEntity<EventFullDto> updateEventByInitiator(@RequestBody @Valid UpdateEventUserRequest updateEvent,
                                                         @PathVariable int userId,
                                                         @PathVariable int eventId) {
-        log.info("EVENT_USER_КОНТРОЛЛЕР: PATCH-запрос по эндпоинту /users/{}/events/{}", userId, eventId);
+        log.info("EVENT_USER_CONTROLLER: PATCH-запрос по эндпоинту /users/{}/events/{}", userId, eventId);
         EventFullDto eventDto = eventService.updateEventByInitiator(updateEvent, userId, eventId);
         return ResponseEntity.status(HttpStatus.OK).body(eventDto);
     }
@@ -48,14 +48,14 @@ public class EventUserController {
     ResponseEntity<EventRequestStatusUpdateResult> updateRequestStatusByInitiator(@RequestBody @Valid EventRequestStatusUpdateRequest updateRequest,
                                                                                   @PathVariable int userId,
                                                                                   @PathVariable int eventId) {
-        log.info("EVENT_USER_КОНТРОЛЛЕР: PATCH-запрос по эндпоинту /users/{}/events/{}/requests", userId, eventId);
+        log.info("EVENT_USER_CONTROLLER: PATCH-запрос по эндпоинту /users/{}/events/{}/requests", userId, eventId);
         return ResponseEntity.status(HttpStatus.OK).body(
                 userRequestService.updateRequestStatusByInitiator(updateRequest, userId, eventId));
     }
 
     @GetMapping("/{eventId}/requests")
     ResponseEntity<List<ParticipationRequestDto>> findEventRequestsByUser(@PathVariable int userId, @PathVariable int eventId) {
-        log.info("EVENT_USER_КОНТРОЛЛЕР: GET-запрос по эндпоинту /users/{}/events/{}/requests", userId, eventId);
+        log.info("EVENT_USER_CONTROLLER: GET-запрос по эндпоинту /users/{}/events/{}/requests", userId, eventId);
         List<ParticipationRequestDto> requestDtoList = userRequestService.findEventRequestsByInitiator(eventId, userId);
         return ResponseEntity.status(HttpStatus.OK).body(requestDtoList);
     }
@@ -64,14 +64,14 @@ public class EventUserController {
     ResponseEntity<List<EventFullDto>> findInitiatorEvents(@PathVariable int userId,
                                                            @RequestParam(defaultValue = "0") int from,
                                                            @RequestParam(defaultValue = "10") int size) {
-        log.info("EVENT_USER_КОНТРОЛЛЕР: GET-запрос по эндпоинту user/{}/events?from={}, size={}", userId, from, size);
+        log.info("EVENT_USER_CONTROLLER: GET-запрос по эндпоинту user/{}/events?from={}, size={}", userId, from, size);
         List<EventFullDto> eventDtoList = eventService.findInitiatorEvents(userId, from, size);
         return ResponseEntity.status(HttpStatus.OK).body(eventDtoList);
     }
 
     @GetMapping("/{eventId}")
     ResponseEntity<EventFullDto> findEvent(@PathVariable int userId, @PathVariable int eventId) {
-        log.info("EVENT_USER_КОНТРОЛЛЕР: GET-запрос по эндпоинту /users/{}/events/{}", userId, eventId);
+        log.info("EVENT_USER_CONTROLLER: GET-запрос по эндпоинту /users/{}/events/{}", userId, eventId);
         return ResponseEntity.status(HttpStatus.OK).body(eventService.findEvent(userId, eventId));
     }
 }

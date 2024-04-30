@@ -32,7 +32,7 @@ public class EventPublicController {
                                                                 @RequestParam(defaultValue = "0") int from,
                                                                 @RequestParam(defaultValue = "10") int size,
                                                                 HttpServletRequest request) {
-        log.info("EVENT_PUBLIC_КОНТРОЛЛЕР: GET-запрос по эндпоинту /events?text={}, categories={}, paid={}, " +
+        log.info("EVENT_PUBLIC_CONTROLLER: GET-запрос по эндпоинту /events?text={}, categories={}, paid={}, " +
                         "rangeStart={}, rangeEnd={}, onlyAvailable={}, sort={}, from={}, size={}", text, categories, paid,
                 rangeStart, rangeEnd, onlyAvailable, sort, from, size);
         List<EventShortDto> lst = eventService.findEventsByPublicRequest(text, categories, paid,
@@ -42,8 +42,10 @@ public class EventPublicController {
 
     @GetMapping("/{eventId}")
     ResponseEntity<EventFullDto> findEventPublic(@PathVariable int eventId, HttpServletRequest request) {
-        log.info("EVENT_PUBLIC_КОНТРОЛЛЕР: GET-запрос по эндпоинту /events/{}", eventId);
+        log.info("EVENT_PUBLIC_CONTROLLER: GET-запрос по эндпоинту /events/{}", eventId);
+
         EventFullDto eventDto = eventService.findEventByPublicRequest(eventId, request);
         return ResponseEntity.status(HttpStatus.OK).body(eventDto);
     }
 }
+

@@ -25,7 +25,7 @@ public class EventAdminController {
     @PatchMapping("/{eventId}")
     ResponseEntity<EventFullDto> updateEventByAdmin(@RequestBody @Valid UpdateEventAdminRequest updateEvent,
                                                     @PathVariable int eventId) {
-        log.info("EVENT_ADMIN_КОНТРОЛЛЕР: PATCH-запрос по эндпоинту admin/events/{}", eventId);
+        log.info("EVENT_ADMIN_CONTROLLER: PATCH-запрос по эндпоинту admin/events/{}", eventId);
         return ResponseEntity.status(HttpStatus.OK).body(eventService.updateEventByAdmin(updateEvent, eventId));
     }
 
@@ -37,7 +37,7 @@ public class EventAdminController {
                                                          @RequestParam(required = false) String rangeEnd,
                                                          @RequestParam(required = false, defaultValue = "0") Integer from,
                                                          @RequestParam(required = false, defaultValue = "10") Integer size) {
-        log.info("EVENT_ADMIN_КОНТРОЛЛЕР: GET-запрос по эндпоинту admin/events?users={}, states={}, categories={}, " +
+        log.info("EVENT_ADMIN_CONTROLLER: GET-запрос по эндпоинту admin/events?users={}, states={}, categories={}, " +
                         "rangeStart={}, rangeEnd={}, from={}, size={}",
                 users, states, categories, rangeStart, rangeEnd, from, size);
         List<EventFullDto> lst = eventService.findEventsByParamByAdmin(users, states, categories, rangeStart, rangeEnd, from, size);
