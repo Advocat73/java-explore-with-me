@@ -59,7 +59,7 @@ public class EndpointRequestRepositoryTest {
         List<EndpointRequestShort> lst = fillLocalDataAndDBResultList(
                 allEventsUriName,
                 LocalDateTime.now(),
-                LocalDateTime.now().plusYears(random.nextInt(RECORD_COUNT+1)));
+                LocalDateTime.now().plusYears(random.nextInt(RECORD_COUNT + 1)));
         for (int i = 0; i < lst.size(); i++)
             assertEquals(lst.get(i).getHits(), sortedCountHitsLst.get(i));
     }
@@ -69,7 +69,7 @@ public class EndpointRequestRepositoryTest {
     void findAllEventsWithoutUris() {
         List<EndpointRequestShort> lst = fillLocalDataAndDBResultList(
                 LocalDateTime.now(),
-                LocalDateTime.now().plusYears(random.nextInt(RECORD_COUNT+1)));
+                LocalDateTime.now().plusYears(random.nextInt(RECORD_COUNT + 1)));
         for (int i = 0; i < lst.size(); i++)
             assertEquals(lst.get(i).getHits(), sortedCountHitsLst.get(i));
     }
