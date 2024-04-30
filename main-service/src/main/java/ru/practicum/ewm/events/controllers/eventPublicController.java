@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Validated
 @RequestMapping(path = "/events")
-public class EventPublicController {
+public class eventPublicController {
     private final EventService eventService;
 
     @GetMapping
@@ -48,4 +48,3 @@ public class EventPublicController {
         return ResponseEntity.status(HttpStatus.OK).body(eventDto);
     }
 }
-

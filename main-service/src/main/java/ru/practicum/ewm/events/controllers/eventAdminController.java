@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Validated
 @RequestMapping(path = "/admin/events")
-public class EventAdminController {
+public class eventAdminController {
     private final EventService eventService;
 
     @PatchMapping("/{eventId}")
