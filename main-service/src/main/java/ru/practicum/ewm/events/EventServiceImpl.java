@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.practicum.ewm.categories.Category;
 import ru.practicum.ewm.categories.CategoryRepository;
@@ -18,7 +19,6 @@ import ru.practicum.ewm.stats.endpointRequestDto.ViewStats;
 import ru.practicum.ewm.users.User;
 import ru.practicum.ewm.users.UserRepository;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -117,7 +117,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<EventShortDto> findEventsByPublicRequest(String text, int[] categories, Boolean paid, String rangeStart,
                                                          String rangeEnd, Boolean onlyAvailable, String sort,
-                                                         int from, int size, HttpServletRequest request) {
+                                                         int from, int size, String ipAddress, String uri) {
         log.info("EVENT_СЕРВИС: Отправлен публичный запрос на получение данных о событиях по парамметрам");
         LocalDateTime start = (rangeStart == null) ? null : LocalDateTime.parse(rangeStart, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         LocalDateTime end = (rangeEnd == null) ? null : LocalDateTime.parse(rangeEnd, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
@@ -134,29 +134,30 @@ public class EventServiceImpl implements EventService {
                 .build();
         List<Event> events = searchEventByParam(filter, createPageRequest(sort, from, size));
         log.info("EVENT_СЕРВИС: Найдено {} событий", events.size());
-        statsClientController.addNewRequest(APP_NAME, request.getRequestURI(), request.getRemoteAddr(),
+        statsClientController.addNewRequest(APP_NAME, uri, ipAddress,
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         return EventMapper.toEventShortDtoList(events);
     }
 
     @Override
-    public EventFullDto findEventByPublicRequest(int eventId, HttpServletRequest request) {
+    public EventFullDto findEventByPublicRequest(Integer eventId, String ipAddress, String uri) {
         log.info("EVENT_SERVICE: Отправлен публичный запрос на получение данных о событии с Id: {}", eventId);
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException("Не найдено событие с Id: " + eventId));
-        String ipAddress = request.getRemoteAddr();
         if (event.getState() != State.PUBLISHED)
             throw new NotFoundException("Не найдено событие с Id: " + eventId);
-        if (!event.getIpAddresses().contains(ipAddress)) {
-            event.setViews(event.getViews() + 1);
-            event.getIpAddresses().add(ipAddress);
-            eventRepository.save(event);
-        }
-        statsClientController.addNewRequest(APP_NAME, request.getRequestURI(), ipAddress,
+        event.getIpAddresses().add(ipAddress);
+        statsClientController.addNewRequest(APP_NAME, uri, ipAddress,
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        ViewStats[] viewStats = statsClientController.getEndpointRequestList(event.getEventDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), new String[]{"/events/" + eventId}, true);
-        event.setViews(viewStats[0].getHits());
+        LocalDateTime start = LocalDateTime.of(2000, 1, 1, 0, 0, 0);
+
+        ResponseEntity<ViewStats[]> viewStats = statsClientController.getEndpointRequestList(start.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), new String[]{uri}, true);
+        if ((viewStats.getStatusCode().is2xxSuccessful() && viewStats.hasBody() && viewStats.getBody() != null)) {
+            event.setViews(viewStats.getBody()[0].getHits());
+        } else {
+            event.setViews(0);
+        }
         return EventMapper.toEventFullDto(event);
     }
 

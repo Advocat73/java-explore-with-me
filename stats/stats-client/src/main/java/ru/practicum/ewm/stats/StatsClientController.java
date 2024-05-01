@@ -2,6 +2,7 @@ package ru.practicum.ewm.stats;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import ru.practicum.ewm.stats.endpointRequestDto.EndpointHit;
 import ru.practicum.ewm.stats.endpointRequestDto.ViewStats;
@@ -21,7 +22,7 @@ public class StatsClientController {
         statsClientService.addNewRequest(endpointHit);
     }
 
-    public ViewStats[] getEndpointRequestList(String start, String end, String[] uris, Boolean unique) {
+    public ResponseEntity<ViewStats[]> getEndpointRequestList(String start, String end, String[] uris, Boolean unique) {
         log.info("STATS_CLIENT_КОНТРОЛЛЕР: GET-запрос по эндпоинту /stats");
         LocalDateTime startTime = LocalDateTime.parse(start, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         LocalDateTime endTime = LocalDateTime.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));

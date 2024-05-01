@@ -40,13 +40,17 @@ public class EventMapper {
         }
         EventFullDto eventFullDto = new EventFullDto();
         eventFullDto.setAnnotation(event.getAnnotation());
-        eventFullDto.setCategory(CategoryMapper.toCategoryDto(event.getCategory()));
+        if (event.getCategory() != null)
+            eventFullDto.setCategory(CategoryMapper.toCategoryDto(event.getCategory()));
         eventFullDto.setConfirmedRequests(event.getConfirmedRequests());
-        eventFullDto.setCreatedOn(event.getCreatedOn().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        if (event.getCreatedOn() != null)
+            eventFullDto.setCreatedOn(event.getCreatedOn().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         eventFullDto.setDescription(event.getDescription());
-        eventFullDto.setEventDate(event.getEventDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        if (event.getEventDate() != null)
+            eventFullDto.setEventDate(event.getEventDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         eventFullDto.setId(event.getId());
-        eventFullDto.setInitiator(new UserShortDto(event.getInitiator().getId(), event.getInitiator().getName()));
+        if (event.getInitiator() != null)
+            eventFullDto.setInitiator(new UserShortDto(event.getInitiator().getId(), event.getInitiator().getName()));
         eventFullDto.setLocation(new Location(event.getLat(), event.getLon()));
         eventFullDto.setPaid(event.getPaid());
         eventFullDto.setParticipantLimit(event.getParticipantLimit());

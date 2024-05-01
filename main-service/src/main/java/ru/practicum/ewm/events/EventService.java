@@ -2,7 +2,6 @@ package ru.practicum.ewm.events;
 
 import ru.practicum.ewm.events.dto.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface EventService {
@@ -21,9 +20,9 @@ public interface EventService {
 
     List<EventShortDto> findEventsByPublicRequest(String text, int[] categories, Boolean paid, String rangeStart,
                                                   String rangeEnd, Boolean onlyAvailable, String sort, int from,
-                                                  int size, HttpServletRequest request);
+                                                  int size, String ipAddress, String uri);
 
-    EventFullDto findEventByPublicRequest(int eventId, HttpServletRequest request);
+    EventFullDto findEventByPublicRequest(Integer eventId, String ipAddress, String uri);
 
 
 }

@@ -36,7 +36,7 @@ public class EventPublicController {
                         "rangeStart={}, rangeEnd={}, onlyAvailable={}, sort={}, from={}, size={}", text, categories, paid,
                 rangeStart, rangeEnd, onlyAvailable, sort, from, size);
         List<EventShortDto> lst = eventService.findEventsByPublicRequest(text, categories, paid,
-                rangeStart, rangeEnd, onlyAvailable, sort, from, size, request);
+                rangeStart, rangeEnd, onlyAvailable, sort, from, size, request.getRemoteAddr(), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.OK).body(lst);
     }
 
@@ -44,7 +44,7 @@ public class EventPublicController {
     ResponseEntity<EventFullDto> findEventPublic(@PathVariable int eventId, HttpServletRequest request) {
         log.info("EVENT_PUBLIC_CONTROLLER: GET-запрос по эндпоинту /events/{}", eventId);
 
-        EventFullDto eventDto = eventService.findEventByPublicRequest(eventId, request);
+        EventFullDto eventDto = eventService.findEventByPublicRequest(eventId, request.getRemoteAddr(), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.OK).body(eventDto);
     }
 }
