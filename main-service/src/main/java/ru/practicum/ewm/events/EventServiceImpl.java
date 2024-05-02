@@ -150,14 +150,11 @@ public class EventServiceImpl implements EventService {
         statsClientController.addNewRequest(APP_NAME, uri, ipAddress,
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         LocalDateTime start = LocalDateTime.of(2000, 1, 1, 0, 0, 0);
-
         ResponseEntity<ViewStats[]> viewStats = statsClientController.getEndpointRequestList(start.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), new String[]{uri}, true);
-        if ((viewStats.getStatusCode().is2xxSuccessful() && viewStats.hasBody() && viewStats.getBody() != null)) {
-            event.setViews(viewStats.getBody()[0].getHits());
-        } else {
-            event.setViews(0);
-        }
+        event.setViews(
+                (viewStats.getStatusCode().is2xxSuccessful() && viewStats.hasBody() && viewStats.getBody() != null) ?
+                        viewStats.getBody()[0].getHits() : 0);
         return EventMapper.toEventFullDto(event);
     }
 
@@ -168,7 +165,7 @@ public class EventServiceImpl implements EventService {
         else if (sort.equals("EVENT_DATE"))
             sortBy = Sort.by("eventDate").ascending();
         else if (sort.equals("VIEWS"))
-            sortBy = Sort.by("eventDate").ascending();
+            sortBy = Sort.by("views").ascending();
         else sortBy = Sort.by("Id").descending();
         int page = (from < size) ? 0 : from / size;
         return PageRequest.of(page, size, sortBy);

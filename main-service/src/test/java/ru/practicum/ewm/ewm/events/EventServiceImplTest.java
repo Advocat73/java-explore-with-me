@@ -44,7 +44,6 @@ public class EventServiceImplTest {
         event.setState(State.PUBLISHED);
         event.setEventDate(LocalDateTime.now().plusYears(3));
         when(eventRepository.findById(ArgumentMatchers.any(Integer.class))).thenReturn(Optional.of(event));
-        //when(eventRepository.save(ArgumentMatchers.any(Event.class))).thenReturn(event);
         eventService.findEventByPublicRequest(1, "0:0:0:0:0:0:0:1", "/events/1");
         eventService.findEventByPublicRequest(1, "0:0:0:0:0:0:0:1", "/events/1");
         EventFullDto eventFullDto = eventService.findEventByPublicRequest(1, "0:0:0:0:0:0:0:2", "/events/1");

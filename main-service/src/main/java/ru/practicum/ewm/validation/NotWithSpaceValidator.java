@@ -16,7 +16,6 @@ public class NotWithSpaceValidator implements ConstraintValidator<NotWithSpace, 
         String message = context.getDefaultConstraintMessageTemplate();
         if (value != null && !(value.isEmpty() || value.contains(" ")))
             return true;
-        //else throw new BadRequestException("Ошибка: Строка не должна пустой и не должна содержать пробелы");
         else throw new BadRequestException(message);
     }
 }

@@ -16,10 +16,10 @@ import java.time.format.DateTimeFormatter;
 public class StatsClientController {
     private final StatsClientService statsClientService;
 
-    public void addNewRequest(String app, String uri, String ip, String timestamp) {
+    public ResponseEntity<EndpointHit> addNewRequest(String app, String uri, String ip, String timestamp) {
         log.info("STATS_CLIENT_КОНТРОЛЛЕР: POST-запрос по эндпоинту /hit");
         EndpointHit endpointHit = new EndpointHit(0L, app, uri, ip, timestamp);
-        statsClientService.addNewRequest(endpointHit);
+        return statsClientService.addNewRequest(endpointHit);
     }
 
     public ResponseEntity<ViewStats[]> getEndpointRequestList(String start, String end, String[] uris, Boolean unique) {

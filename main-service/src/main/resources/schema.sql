@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS events (
   created_on TIMESTAMP WITHOUT TIME ZONE NOT NULL,
   description VARCHAR NOT NULL,
   event_date TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  initiator_id INT NOT NULL REFERENCES users (id) ON update CASCADE/* ON delete CASCADE*/,
+  initiator_id INT NOT NULL REFERENCES users (id) ON update CASCADE,
   lat DECIMAL NOT NULL,
   lon DECIMAL NOT NULL,
   paid boolean NOT NULL,
