@@ -17,15 +17,15 @@ import javax.validation.constraints.NotBlank;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    private Integer id;
     @NotBlank
     @Length(min = 2, max = 250, message = "Поле: name. Ошибка: длина не соответствует установленной")
-    String name;
+    private String name;
     @NotBlank
     @Length(min = 6, max = 254, message = "Поле: email. Ошибка: длина не соответствует установленной.")
     @Email
     @Column(unique = true)
-    String email;
+    private String email;
 
     @Override
     public boolean equals(Object o) {

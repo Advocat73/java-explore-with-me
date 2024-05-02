@@ -7,7 +7,6 @@ import java.time.format.DateTimeFormatter;
 
 @Data
 public class ApiError {
-    //private String[] errors;
     private final String status;
     private final String reason;
     private final String message;

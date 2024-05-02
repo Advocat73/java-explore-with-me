@@ -13,9 +13,9 @@ import javax.validation.constraints.NotBlank;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserDto {
-    private int id;
+    int id;
     @NotBlank
     @Length(min = 2, max = 250, message = "Поле: name. Ошибка: длина не соответствует установленной")
     String name;
