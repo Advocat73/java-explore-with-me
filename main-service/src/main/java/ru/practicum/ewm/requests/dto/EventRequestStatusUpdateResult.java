@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class EventRequestStatusUpdateResult {
     List<ParticipationRequestDto> confirmedRequests = new ArrayList<>();
     List<ParticipationRequestDto> rejectedRequests = new ArrayList<>();

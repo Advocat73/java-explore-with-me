@@ -7,7 +7,7 @@ import lombok.experimental.FieldDefaults;
 
 @NoArgsConstructor
 @Data
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ParticipationRequestDto {
     String created;
     int event;
