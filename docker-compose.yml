@@ -1,5 +1,32 @@
 version: '3.1'
 services:
+  ewm-service:
+    build: main-service
+    image: main-service-image
+    container_name: main-service-container
+    ports:
+      - "8080:8080"
+    depends_on:
+      - stats-server
+      - ewm-db
+    environment:
+      - STATS_SERVER_URL=http://stats-server:9090
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ewm-db:5432/exploreWithMeEWM
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_DRIVER_CLASS_NAME=org.postgresql.Driver
+
+  ewm-db:
+    image: postgres:14-alpine
+    container_name: ewm-db-container
+    ports:
+      - "6432:5432"
+    environment:
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_USER=root
+      - POSTGRES_DB=exploreWithMeEWM
+
+
   stats-server:
     build: stats/stats-server
     image: stats-server-image
@@ -23,17 +50,4 @@ services:
       - POSTGRES_PASSWORD=root
       - POSTGRES_USER=root
       - POSTGRES_DB=exploreWithMeStats
-
-  ewm-service:
-    build: main-service
-    image: main-service-image
-    container_name: main-service-container
-    ports:
-      - "8080:8080"
-    depends_on:
-      - ewm-db
-
-  ewm-db:
-    image: postgres:14-alpine
-    container_name: ewm-db-container
 

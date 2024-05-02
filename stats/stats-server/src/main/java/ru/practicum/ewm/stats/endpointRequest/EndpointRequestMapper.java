@@ -1,13 +1,13 @@
 package ru.practicum.ewm.stats.endpointRequest;
 
-import ru.practicum.ewm.stats.endpointRequestDto.EndpointRequestInDto;
-import ru.practicum.ewm.stats.endpointRequestDto.EndpointRequestOutDto;
+import ru.practicum.ewm.stats.endpointRequestDto.EndpointHit;
+import ru.practicum.ewm.stats.endpointRequestDto.ViewStats;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class EndpointRequestMapper {
-    public static EndpointRequest fromEndpointRequestInDto(EndpointRequestInDto endpointRequestInDto) {
+    public static EndpointRequest fromEndpointHit(EndpointHit endpointRequestInDto) {
         if (endpointRequestInDto == null)
             return null;
         EndpointRequest endpointRequest = new EndpointRequest();
@@ -18,26 +18,26 @@ public class EndpointRequestMapper {
         return endpointRequest;
     }
 
-    public static EndpointRequestInDto toEndpointRequestInDto(EndpointRequest endpointRequest) {
+    public static EndpointHit toEndpointHit(EndpointRequest endpointRequest) {
         if (endpointRequest == null)
             return null;
-        EndpointRequestInDto endpointRequestInDto = new EndpointRequestInDto();
-        endpointRequestInDto.setId(endpointRequest.getId());
-        endpointRequestInDto.setApp(endpointRequest.getAppName());
-        endpointRequestInDto.setUri(endpointRequest.getUri());
-        endpointRequestInDto.setIp(endpointRequest.getIp());
-        endpointRequestInDto.setTimestamp(endpointRequest.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        return endpointRequestInDto;
+        EndpointHit endpointHit = new EndpointHit();
+        endpointHit.setId(endpointRequest.getId());
+        endpointHit.setApp(endpointRequest.getAppName());
+        endpointHit.setUri(endpointRequest.getUri());
+        endpointHit.setIp(endpointRequest.getIp());
+        endpointHit.setTimestamp(endpointRequest.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        return endpointHit;
     }
 
-    public static EndpointRequestOutDto toEndpointRequestOutDto(EndpointRequestShort endpointRequestShort) {
+    public static ViewStats toViewStats(EndpointRequestShort endpointRequestShort) {
         if (endpointRequestShort == null)
             return null;
-        EndpointRequestOutDto endpointRequestOutDto = new EndpointRequestOutDto();
-        endpointRequestOutDto.setApp(endpointRequestShort.getAppName());
-        endpointRequestOutDto.setUri(endpointRequestShort.getUri());
-        endpointRequestOutDto.setHits((int) (long) (endpointRequestShort.getHits()));
-        return endpointRequestOutDto;
+        ViewStats viewStats = new ViewStats();
+        viewStats.setApp(endpointRequestShort.getAppName());
+        viewStats.setUri(endpointRequestShort.getUri());
+        viewStats.setHits((int) (long) (endpointRequestShort.getHits()));
+        return viewStats;
     }
 }
 
