@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "2d9ae450-b00b-42f9-b9a3-6a0c5b46ef2f",
-		"name": "feature",
+		"name": "feature-old",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "31327477"
 	},
@@ -140,51 +140,6 @@
 			"response": []
 		},
 		{
-			"name": "Изменение статуса добавленного события",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Ответ должен содержать код 200 и данные в формате json\", function(){\r",
-							"    pm.expect(pm.response.code).to.equal(200); \r",
-							"    pm.response.to.have.jsonBody;    \r",
-							"})"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "PATCH",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"stateAction\": \"PUBLISH_EVENT\" \r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/admin/events/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"admin",
-						"events",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Добавление  нового второго события",
 			"event": [
 				{
@@ -230,45 +185,7 @@
 			"response": []
 		},
 		{
-			"name": "Добавление нового лайка к событию с Id 2, который в статусе Pending",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Ответ должен содержать код 400 и данные в формате json\", function(){\r",
-							"    pm.expect(pm.response.code).to.equal(400); \r",
-							"    pm.response.to.have.jsonBody;    \r",
-							"})"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/eventlikes/event/2/user/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"eventlikes",
-						"event",
-						"2",
-						"user",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Изменение статуса добавленного события с Id 2",
+			"name": "Изменение статуса добавленного события с Id 1",
 			"event": [
 				{
 					"listen": "test",
@@ -389,7 +306,7 @@
 			"response": []
 		},
 		{
-			"name": "Добавление нового лайка событию 1 от инициатора",
+			"name": "Добавление нового лайка событию 1 от пользователя 1",
 			"event": [
 				{
 					"listen": "test",
@@ -480,7 +397,7 @@
 			"response": []
 		},
 		{
-			"name": "Добавление нового лайка событию 1 от пользователя 2",
+			"name": "Добавление нового лайка событию 1 от пользователя 100",
 			"event": [
 				{
 					"listen": "test",
@@ -518,7 +435,7 @@
 			"response": []
 		},
 		{
-			"name": "Добавление  повторного лайка событию 1 от пользователя 2",
+			"name": "Добавление  повторного лайка событию 1 от пользователя 100",
 			"event": [
 				{
 					"listen": "test",
