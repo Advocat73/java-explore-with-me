@@ -53,8 +53,6 @@ public class EventLikeServiceImpl implements EventLikeService {
 
     @Override
     public List<EventLikeResponse> findPopularEventsByLikes() {
-        /*List<Event> events = eventLikeRepository.findPopularEventsByLikes();
-        return EventMapper.toEventFullDtoList(events);*/
         return eventLikeRepository.findPopularEventsByLikes();
     }
 
