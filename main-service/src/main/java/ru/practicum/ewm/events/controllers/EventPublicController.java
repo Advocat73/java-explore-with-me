@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.ewm.eventlikes.EventLikeResponse;
+import ru.practicum.ewm.eventlikes.EventLikeService;
 import ru.practicum.ewm.events.EventService;
 import ru.practicum.ewm.events.dto.EventFullDto;
 import ru.practicum.ewm.events.dto.EventShortDto;
@@ -20,6 +22,7 @@ import java.util.List;
 @RequestMapping(path = "/events")
 public class EventPublicController {
     private final EventService eventService;
+    private final EventLikeService eventLikeService;
 
     @GetMapping
     ResponseEntity<List<EventShortDto>> findEventsByParamPublic(@RequestParam(required = false) String text,
@@ -43,8 +46,14 @@ public class EventPublicController {
     @GetMapping("/{eventId}")
     ResponseEntity<EventFullDto> findEventPublic(@PathVariable int eventId, HttpServletRequest request) {
         log.info("EVENT_PUBLIC_CONTROLLER: GET-запрос по эндпоинту /events/{}", eventId);
-
         EventFullDto eventDto = eventService.findEventByPublicRequest(eventId, request.getRemoteAddr(), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.OK).body(eventDto);
+    }
+
+    @GetMapping("/likes")
+    ResponseEntity<List<EventLikeResponse>> findPopularEventsByLikes() {
+        log.info("EVENT_PUBLIC_CONTROLLER: GET-запрос по эндпоинту /events/likes");
+        List<EventLikeResponse> eventLikeResponseList = eventLikeService.findPopularEventsByLikes();
+        return ResponseEntity.status(HttpStatus.OK).body(eventLikeResponseList);
     }
 }

@@ -15,9 +15,6 @@ public interface EventRepository extends JpaRepository<Event, Integer>, JpaSpeci
 
     List<Event> findAllByInitiatorId(int initiatorId, PageRequest pageRequest);
 
-    List<Event> findAllByAnnotationContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndCategoryInAndPaid(
-            String textInAnnotation, String textInDescription, List<Category> categories, boolean paid, PageRequest pageRequest);
-
     List<Event> findAllByIdIn(List<Integer> eventIds);
 }
 

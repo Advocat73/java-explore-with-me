@@ -1,4 +1,4 @@
-package ru.practicum.ewm.ewm.events;
+package ru.practicum.ewm.events;
 
 import lombok.Data;
 import org.junit.jupiter.api.BeforeEach;
