@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.ewm.eventlikes.EventLikeService;
 import ru.practicum.ewm.events.EventService;
 import ru.practicum.ewm.events.dto.EventFullDto;
 import ru.practicum.ewm.events.dto.NewEventDto;
@@ -26,6 +27,7 @@ import java.util.List;
 public class EventUserController {
     private final EventService eventService;
     private final UserRequestService userRequestService;
+    private final EventLikeService eventLikeService;
 
     @PostMapping
     public ResponseEntity<EventFullDto> addNewEvent(@RequestBody @Valid NewEventDto newEventDto,
@@ -73,6 +75,12 @@ public class EventUserController {
     ResponseEntity<EventFullDto> findEvent(@PathVariable int userId, @PathVariable int eventId) {
         log.info("EVENT_USER_CONTROLLER: GET-запрос по эндпоинту /users/{}/events/{}", userId, eventId);
         return ResponseEntity.status(HttpStatus.OK).body(eventService.findEvent(userId, eventId));
+    }
+
+    @GetMapping("/likes")
+    ResponseEntity<List<EventFullDto>> findEventsByUserLikes(@PathVariable int userId) {
+        log.info("EVENT_USER_CONTROLLER: GET-запрос по эндпоинту /users/{}/events/likes", userId);
+        return ResponseEntity.status(HttpStatus.OK).body(eventLikeService.findEventsByUserLikes(userId));
     }
 }
 
